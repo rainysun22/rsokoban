@@ -3,6 +3,7 @@ use ggez::{
     graphics::{self, DrawParam, Image},
     Context, GameResult
 };
+use ggez::input::keyboard::KeyCode;
 use glam::Vec2;
 use hecs::{Entity, World};
 
@@ -88,7 +89,10 @@ pub fn load_map(world: &mut World, map_string: String) {
 }
 
 impl event::EventHandler<ggez::GameError> for Game {
-    fn update(&mut self, _context: &mut Context) -> GameResult {
+    fn update(&mut self, context: &mut Context) -> GameResult {
+        {
+            run_input_print(&self.world, context);
+        }
         Ok(())
     }
     fn draw(&mut self, context: &mut Context) -> GameResult {
@@ -96,6 +100,21 @@ impl event::EventHandler<ggez::GameError> for Game {
             run_rendering(&self.world, context);
         }
         Ok(())
+    }
+}
+
+fn run_input_print(_world: &World, context: &mut Context) {
+    if context.keyboard.is_key_pressed(KeyCode::Up) {
+        println!("Up");
+    }
+    if context.keyboard.is_key_pressed(KeyCode::Down) {
+        println!("Down");
+    }
+    if context.keyboard.is_key_pressed(KeyCode::Left) {
+        println!("Left");
+    }
+    if context.keyboard.is_key_pressed(KeyCode::Right) {
+        println!("Right");
     }
 }
 
