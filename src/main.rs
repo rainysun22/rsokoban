@@ -91,7 +91,7 @@ pub fn load_map(world: &mut World, map_string: String) {
 impl event::EventHandler<ggez::GameError> for Game {
     fn update(&mut self, context: &mut Context) -> GameResult {
         {
-            run_input_print(&self.world, context);
+            run_input(&self.world, context);
         }
         Ok(())
     }
@@ -103,18 +103,20 @@ impl event::EventHandler<ggez::GameError> for Game {
     }
 }
 
-fn run_input_print(_world: &World, context: &mut Context) {
-    if context.keyboard.is_key_pressed(KeyCode::Up) {
-        println!("Up");
-    }
-    if context.keyboard.is_key_pressed(KeyCode::Down) {
-        println!("Down");
-    }
-    if context.keyboard.is_key_pressed(KeyCode::Left) {
-        println!("Left");
-    }
-    if context.keyboard.is_key_pressed(KeyCode::Right) {
-        println!("Right");
+fn run_input(world: &World, context: &mut Context) {
+    for (_, (position, _)) in world.query::<(&mut Position, &Player)>().iter() {
+        if context.keyboard.is_key_just_pressed(KeyCode::Up) {
+            position.y -= 1;
+        }
+        if context.keyboard.is_key_just_pressed(KeyCode::Down) {
+            position.y += 1;
+        }
+        if context.keyboard.is_key_just_pressed(KeyCode::Left) {
+            position.x -= 1;
+        }
+        if context.keyboard.is_key_just_pressed(KeyCode::Right) {
+            position.x += 1;
+        }
     }
 }
 
